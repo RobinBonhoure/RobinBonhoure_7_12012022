@@ -46,6 +46,9 @@ body {
     width: 100%;
     font-size: 18px;
 }
+.searching-input:focus {
+    outline: none;
+}
 
 .searching-input::placeholder {
     color: #929292;

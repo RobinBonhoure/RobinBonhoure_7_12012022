@@ -1,13 +1,24 @@
 const cardGrid = document.getElementById('card-grid');
+const recipesChosenArray = [];
 
-displayCards();
+init();
 
-function displayCards() {
-    recipes.forEach((recipe) => {
-        const { id, name, ingredients, time, description, appliance, ustensils } = recipe;
+function init() {
+    displayCards(recipes);
+}
+
+// DISPLAY CARDS
+function displayCards(inputArray) {
+    cardGrid.innerHTML = "";
+    inputArray.forEach((recipe) => {
+        let { id, name, ingredients, time, description, appliance, ustensils } = recipe;
         // CREATION DES ELEMENTS
         const div = document.createElement('div');
         div.className = "card";
+
+
+
+        // DETAILLER LES CREATIONS
         div.innerHTML = `<div class="card-image"></div>
         <div class="card-infos">
             <div class="card-infos_header">
@@ -26,15 +37,37 @@ function displayCards() {
 
         // RAJOUT DES INGREDIENTS
         ingredients.forEach((item) => {
-            console.log(recipe, item)
-            const { ingredient, quantity, unit } = item;
+            let { ingredient, quantity, unit } = item;
             const listIngredients = document.getElementById(`list-ingredients${id}`);
             const liste = document.createElement('li')
+            if (unit === undefined || null) {
+                unit = "";
+            }
+            if (quantity === undefined || null) {
+                quantity = "";
+            }
             liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
             listIngredients.appendChild(liste);
         })
     })
 }
+
+// SEARCH BAR
+function submitSearch() {
+    let inputValue = document.getElementById("searching-input").value;
+
+    const searchResult = recipes.filter((recipe) => {
+        // console.log(recipe.ingredients)
+        return recipe.ingredients.some(ingredient => {
+            const value = ingredient.ingredient.toLowerCase();
+            return value.includes(inputValue.toLowerCase())
+        })
+    })
+
+    console.log(searchResult)
+
+    // displayCards(recipesChosenArray)
+};
 
     // selectedIngredients.forEach((ingredients) => {
     //     const { date, title, video, image, likes, id } = ingredients;

@@ -16,12 +16,9 @@
 
     <!-- <form action="js/search.js" method="get"> -->
         <div class="searching-field">
-            <input placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" class="searching-input"
+            <input id="searching-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" class="searching-input"
                 type="text">
-                
-    <input id="searchbar" onkeyup="search_animal()" type="text"
-    name="search" placeholder="Search animals..">
-            <img src="assets/icons/search.svg" alt="">
+            <div onclick="submitSearch()"><img src="assets/icons/search.svg" alt=""></div>
         </div>
     <!-- </form> -->
 
@@ -56,26 +53,6 @@
     </div>
 
     <div id="card-grid" class="card-grid">
-        <div class="card">
-            <div class="card-image"></div>
-            <div class="card-infos">
-                <div class="card-infos_header">
-                    <h3>Limonade de Coco</h3>
-                    <div class="card-infos_time">
-                        <img src="assets/icons/time.svg" alt="">
-                        <b>10 min</b>
-                    </div>
-                </div>
-                <div class="card-infos_footer">
-                    <ul>
-                        <li><b>Lait de coco:</b>  <span>400ml</span></li>
-                        <li><b>Lait de coco:</b>  <span>400ml</span></li>
-                    </ul>
-                    <p>Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2
-                        citrons et le sucre. Mixer jusqu'à avoir la consistence désirée</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="js/recipes.js"></script>
