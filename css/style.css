@@ -89,20 +89,71 @@ body {
 .categories-item {
     border-radius: 5px;
     width: 170px;
+    height: 72px;
     margin-right: 20px;
     margin-bottom: 15px;
-    padding: 20px 10px 20px 20px;
+    padding: 0px 10px 0px 20px;
     font-size: 18px;
     font-weight: 700;
     color: white;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.categories-item_header {
+    width: 100%;
+    display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.categories-item_header input {
+    display: none;
+    color: #fff;
+    font-weight: 700;
+}
+.categories-item_header input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 700;
+}
+.categories-items_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+}
+.categories-items_container div {
+    width: 30%;
+    margin-top: 20px;
+    font-weight: 400;
+    display: none;
 }
 
 .ingredients {
     background-color: #3282F7;
 }
+/* INGREDIENTS OPEN */
+.ingredients.open {
+    height: unset;
+    width: 700px;
+    align-items: flex-start;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.ingredients.open p {
+    display: none;
+}
+.ingredients.open .categories_expand {
+    transform: rotate(180deg);
+}
+.ingredients.open .categories-items_container div {
+    display: initial;
+}
+.ingredients.open .categories-item_header input {
+    display: initial;
+}
+
 
 .appareil {
     background-color: #68D9A4;

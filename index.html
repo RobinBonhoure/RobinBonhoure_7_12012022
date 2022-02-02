@@ -15,11 +15,11 @@
     </header>
 
     <!-- <form action="js/search.js" method="get"> -->
-        <div class="searching-field">
-            <input id="searching-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" class="searching-input"
-                type="text">
-            <div onclick="submitSearch()"><img src="assets/icons/search.svg" alt=""></div>
-        </div>
+    <div class="searching-field">
+        <input id="searching-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette"
+            class="searching-input" type="text">
+        <div onclick="submitSearch()"><img src="assets/icons/search.svg" alt=""></div>
+    </div>
     <!-- </form> -->
 
     <div class="tags-actives">
@@ -41,14 +41,40 @@
     </div>
 
     <div class="categories">
-        <div class="categories-item ingredients">Ingredients
-            <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+        <div id="categories-item_ingredients" class="categories-item ingredients">
+            <div class="categories-item_header">
+                <p class="">Ingredients</p>
+                <input id="searching-ingredient-input" placeholder="Rechercher un ingrédient" class="searching-input" type="text">
+                <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+            </div>
+            <div id="categories-items_container_ingredients" class="categories-items_container">
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+                <div>lal</div>
+            </div>
         </div>
-        <div class="categories-item appareil">Appareil
-            <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+        <div id="categories-item_appareil" class="categories-item appareil">
+            <div class="categories-item_header">
+                <p class="">Appareil</p>
+                <input id="searching-input" placeholder="Rechercher un ingrédient" class="searching-input" type="text">
+                <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+            </div>
+            <div id="categories-items_container_appareil" class="categories-items_container">
+            </div>
         </div>
-        <div class="categories-item ustensiles">Ustensiles
-            <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+        <div id="categories-item_ustensiles" class="categories-item ustensiles">
+            <div class="categories-item_header">
+                <p class="">Ustensiles</p>
+                <input id="searching-input" placeholder="Rechercher un ingrédient" class="searching-input" type="text">
+                <img class="categories_expand" src="assets/icons/expand.svg" alt="">
+            </div>
+            <div id="categories-items_container_ustensiles" class="categories-items_container">
+            </div>
         </div>
     </div>
 
