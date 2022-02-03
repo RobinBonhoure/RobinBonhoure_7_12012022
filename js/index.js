@@ -2,6 +2,7 @@ const cardGrid = document.getElementById('card-grid');
 const ingredientsTagGrid = document.getElementById('categories-items_container_ingredients');
 let recipesChosenArrayDoublons = [];
 let recipesChosenArray = [];
+let ingredientsTagArrayDoublons = [];
 let ingredientsTagArray = [];
 
 init();
@@ -13,8 +14,7 @@ function init() {
 // DISPLAY CARDS
 function displayCards(inputArray) {
     cardGrid.innerHTML = "";
-    ingredientsTagGrid.innerHTML = "";
-    ingredientsTagArray = [];
+    ingredientsTagArrayDoublons = [];
     inputArray.forEach((recipe) => {
         let { id, name, ingredients, time, description, appliance, ustensils } = recipe;
 
@@ -51,19 +51,45 @@ function displayCards(inputArray) {
                 quantity = "";
             }
             liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
-            listIngredients.appendChild(liste);
+            listIngredients.appendChild(liste)
 
-            // REMPLI LES TAGS INGREDIENTS
-            displayIngredientTags(ingredient);
+            //  INGREDIENTS TAGS
+            ingredientsTagArrayDoublons.push(ingredient)
         })
     })
+
+    // NO DOUBLONS TAGS
+    ingredientsTagArray = uniq(ingredientsTagArrayDoublons)
+
+    // REMPLI LES TAGS INGREDIENTS
+    displayIngredientTags(ingredientsTagArray)
+
 }
 
-function displayIngredientTags(ingredient) {
-    const tagDiv = document.createElement('div');
-    tagDiv.innerHTML = `${ingredient}`;
-    ingredientsTagGrid.appendChild(tagDiv);
-    ingredientsTagArray.push(ingredient);
+// REMPLI LES TAGS INGREDIENTS
+function displayIngredientTags(ingredients) {
+    ingredientsTagGrid.innerHTML = "";
+    ingredients.forEach((ingredient) => {
+        const tagDiv = document.createElement('div')
+        tagDiv.className = "tag";
+        tagDiv.innerHTML = `${ingredient}`
+        ingredientsTagGrid.appendChild(tagDiv)
+    })
+    // EVENT CLICK TAG
+    tagClick ()
+}
+
+// EVENT CLICK TAG
+function tagClick () {
+    let tags = document.querySelectorAll(".tag")
+    tags.forEach((tag) => {
+        tag.addEventListener('click', () => {
+            
+            let tagValue = tag.textContent;
+
+            displayIngredientTags(XXX,tagValue);
+        })
+    })
 }
 
 // SEARCH ON ENTER KEY
@@ -100,7 +126,6 @@ function submitSearch() {
         return recipe.description.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-
     recipesChosenArrayDoublons = [...searchIngredient, ...searchName, ...searchDescription];
     recipesChosenArray = uniq(recipesChosenArrayDoublons);
 
@@ -126,14 +151,12 @@ document.getElementById("searching-ingredient-input").addEventListener("keydown"
 // INGREDIENT SEARCH BAR
 function submitIngredientSearch() {
     let inputValue = document.getElementById("searching-ingredient-input").value;
-    console.log(inputValue)
 
     // search tag in ingredient
     const searchTagIngredient = ingredientsTagArray.filter((ingredient) => {
+        // console.log(ingredient.toLowerCase())
         return ingredient.toLowerCase().includes(inputValue.toLowerCase())
     })
-
-    console.log(searchTagIngredient)
 
     displayIngredientTags(searchTagIngredient);
 };
