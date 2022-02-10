@@ -63,9 +63,10 @@ body {
 
 .tags-actives_close {
     margin-left: 10px;
+    cursor: pointer;
 }
 
-.tag1 {
+.tagPrinted {
     margin-bottom: 15px;
     border-radius: 5px;
     background-color: #3282F7;
@@ -190,6 +191,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 20px;
 }
 .card-infos_time {
     display: flex;
