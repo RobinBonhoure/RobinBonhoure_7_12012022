@@ -1,10 +1,15 @@
 const cardGrid = document.getElementById('card-grid')
 const ingredientsTagGrid = document.getElementById('categories-items_container_ingredients')
-let recipesChosenArrayDoublons = []
+const appareilsTagGrid = document.getElementById('categories-items_container_appareil')
+const ustensilesTagGrid = document.getElementById('categories-items_container_ustensiles')
+const errorMsg = document.getElementById('error-msg')
 let recipesChosenArray = recipes
-let ingredientsTagArrayDoublons = []
 let ingredientsTagArray = []
-let tagsArray = []
+let appareilsTagArray = []
+let ustensilesTagArray = []
+let tagsArrayIngredients = []
+let tagsArrayAppareils = []
+let tagsArrayUstensiles = []
 let recipesChosenArrayTag = recipes
 
 init()
@@ -15,8 +20,13 @@ function init() {
 
 // DISPLAY CARDS
 function displayCards(inputArray) {
+    // ERROR MSG
+    inputArray.length === 0 ? errorMsg.classList.add('active') : errorMsg.classList.remove('active')
+
     cardGrid.innerHTML = ""
-    ingredientsTagArrayDoublons = []
+    ingredientsTagArray = []
+    appareilsTagArray = []
+    ustensilesTagArray = []
     inputArray.forEach((recipe) => {
         let { id, name, ingredients, time, description, appliance, ustensils } = recipe
 
@@ -55,26 +65,60 @@ function displayCards(inputArray) {
             listIngredients.appendChild(liste)
 
             //  INGREDIENTS TAGS
-            ingredientsTagArrayDoublons.push(ingredient)
+            ingredientsTagArray.push(ingredient)
+        })
+        appareilsTagArray.push(appliance)
+        ustensils.forEach((item) => {
+            ustensilesTagArray.push(item)
         })
     })
 
     // NO DOUBLONS TAGS
-    ingredientsTagArray = uniq(ingredientsTagArrayDoublons)
+    ingredientsTagArray = uniq(ingredientsTagArray)
+    appareilsTagArray = uniq(appareilsTagArray)
+    ustensilesTagArray = uniq(ustensilesTagArray)
 
     // REMPLI LES TAGS INGREDIENTS
     displayIngredientTags(ingredientsTagArray)
-
+    displayAppareilTags(appareilsTagArray)
+    displayUstensileTags(ustensilesTagArray)
 }
 
 // REMPLI LES TAGS INGREDIENTS
-function displayIngredientTags(ingredients) {
+function displayIngredientTags(array) {
     ingredientsTagGrid.innerHTML = ""
-    ingredients.forEach((ingredient) => {
+    array.forEach((item) => {
         const tagDiv = document.createElement('div')
         tagDiv.className = "tag"
-        tagDiv.innerHTML = `${ingredient}`
+        tagDiv.dataset.type = "ingredient"
+        tagDiv.innerHTML = `${item}`
         ingredientsTagGrid.appendChild(tagDiv)
+    })
+    // EVENT CLICK TAG
+    tagClick()
+}
+// REMPLI LES TAGS APPAREILS
+function displayAppareilTags(array) {
+    appareilsTagGrid.innerHTML = ""
+    array.forEach((item) => {
+        const tagDiv = document.createElement('div')
+        tagDiv.className = "tag"
+        tagDiv.dataset.type = "appareil"
+        tagDiv.innerHTML = `${item}`
+        appareilsTagGrid.appendChild(tagDiv)
+    })
+    // EVENT CLICK TAG
+    tagClick()
+}
+// REMPLI LES TAGS USTENSILES
+function displayUstensileTags(array) {
+    ustensilesTagGrid.innerHTML = ""
+    array.forEach((item) => {
+        const tagDiv = document.createElement('div')
+        tagDiv.className = "tag"
+        tagDiv.dataset.type = "ustensile"
+        tagDiv.innerHTML = `${item}`
+        ustensilesTagGrid.appendChild(tagDiv)
     })
     // EVENT CLICK TAG
     tagClick()
@@ -87,67 +131,130 @@ function tagClick() {
         tag.addEventListener('click', () => {
 
             let tagValue = tag.textContent
+            let tagType = tag.dataset.type
 
-            addTag(tagValue)
-        })
-    })
-}
-
-// EVENT CLICK TAG
-function onTagCloseClick() {
-    let tagsClose = document.querySelectorAll(".tags-actives_close")
-    tagsClose.forEach((closer) => {
-        closer.addEventListener('click', () => {
-
-            // REMOVE TAG PRINTED
-            closer.parentElement.remove()
-
-            //REROLL CARDS 
-
-            // search ingredients
-            recipesChosenArray = recipesChosenArray.filter((recipe) => {
-                return recipe.ingredients.some(ingredient => {
-                    return ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
-                })
-            })
-
-            displayCards(recipesChosenArrayTag)
-
+            addTag(tagValue, tagType)
         })
     })
 }
 
 // ADD TAG
-function addTag(tag) {
-    tagsArray.push(tag)
-    tagsArray = uniq(tagsArray)
+function addTag(tag, type) {
+    if (type === "ingredient") {
+        tagsArrayIngredients.push(tag)
+        tagsArrayIngredients = uniq(tagsArrayIngredients)
+    }
+    if (type === "appareil") {
+        tagsArrayAppareils.push(tag)
+        tagsArrayAppareils = uniq(tagsArrayAppareils)
+    }
+    if (type === "ustensile") {
+        tagsArrayUstensiles.push(tag)
+        tagsArrayUstensiles = uniq(tagsArrayUstensiles)
+    }
 
-    // search ingredients
-    recipesChosenArrayTag = recipesChosenArray.filter((recipe) => {
-        return recipe.ingredients.some(ingredient => {
-            return ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
-        })
-    })
+    rerollCardsWithTags()
 
-    displayCards(recipesChosenArrayTag)
-
+    // 
     tagClass = tag.toLowerCase().replace(/\s/g, '').replace(/[{()}]/g, '');
     if (document.getElementById("tags-actives").querySelectorAll(`.${tagClass}`).length === 0) {
-        printTag(tag, tagClass)
+        printTag(tag, tagClass, type)
     }
 }
 
 // PRINT TAG
-function printTag(tag, tagClass) {
+function printTag(tag, tagClass, type) {
     const tagPrintedContainer = document.getElementById('tags-actives')
     const tagDiv = document.createElement('div')
-    tagDiv.className = `tagPrinted tagPrinted-blue ${tagClass}`
-    tagDiv.dataset.color = "blue"
+    if (type === "ingredient") tagDiv.className = `tagPrinted tagPrinted-blue ${tagClass}`
+    if (type === "appareil") tagDiv.className = `tagPrinted tagPrinted-green ${tagClass}`
+    if (type === "ustensile") tagDiv.className = `tagPrinted tagPrinted-red ${tagClass}`
     tagDiv.innerHTML = `${tag} <img class="tags-actives_close" src="assets/icons/close.svg" alt="">`
     tagPrintedContainer.appendChild(tagDiv)
 
     //  EVENT CLOSE TAG
     onTagCloseClick()
+}
+
+// EVENT CLICK TAG
+function onTagCloseClick() {
+
+    let tagsClose = document.querySelectorAll(".tags-actives_close")
+    tagsClose.forEach((closer) => {
+        closer.addEventListener('click', () => {
+
+            // REMOVE TAG ON ARRAY
+            let tagValue = closer.parentElement.textContent.trim()
+            if (closer.parentElement.classList.contains('tagPrinted-blue')) {
+                let index = tagsArrayIngredients.indexOf(tagValue)
+                if (index > -1) {
+                    tagsArrayIngredients.splice(index, 1) // 2nd parameter means remove one item only
+                }
+            }
+            if (closer.parentElement.classList.contains('tagPrinted-green')) {
+                let index = tagsArrayAppareils.indexOf(tagValue)
+                if (index > -1) {
+                    tagsArrayAppareils.splice(index, 1) // 2nd parameter means remove one item only
+                }
+            }
+            if (closer.parentElement.classList.contains('tagPrinted-red')) {
+                let index = tagsArrayUstensiles.indexOf(tagValue)
+                if (index > -1) {
+                    tagsArrayUstensiles.splice(index, 1) // 2nd parameter means remove one item only
+                }
+            }
+
+            rerollCardsWithTags()
+
+            // REMOVE TAG PRINTED
+            closer.parentElement.remove()
+        })
+    })
+}
+
+// REROLL CARDS WITH TAGS
+function rerollCardsWithTags() {
+    if (tagsArrayIngredients.length === 0 && tagsArrayAppareils.length === 0 && tagsArrayUstensiles.length === 0) {
+        displayCards(recipes)
+    } else {
+        // init search ingredients
+        recipesChosenArray = recipes
+
+        if (tagsArrayIngredients.length !== 0) {
+            tagsArrayIngredients.forEach((tag) => {
+                // search ingredients
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.ingredients.some(ingredient =>
+                        ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                    )
+                )
+            })
+            console.log(recipesChosenArray)
+        }
+
+        if (tagsArrayAppareils.length !== 0) {
+            tagsArrayAppareils.forEach((tag) => {
+                // search appareil
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+                )
+            })
+            console.log(recipesChosenArray)
+        }
+
+        if (tagsArrayUstensiles.length !== 0) {
+            tagsArrayUstensiles.forEach((tag) => {
+                // search ustensiles
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.ustensils.some(item =>
+                        item.toLowerCase().includes(tag.toLowerCase())
+                    )
+                )
+            })
+        }
+
+        displayCards(recipesChosenArray)
+    }
 }
 
 // SEARCH ON ENTER KEY
@@ -184,8 +291,8 @@ function submitSearch() {
         return recipe.description.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    recipesChosenArrayDoublons = [...searchIngredient, ...searchName, ...searchDescription]
-    recipesChosenArray = uniq(recipesChosenArrayDoublons)
+    recipesChosenArray = [...searchIngredient, ...searchName, ...searchDescription]
+    recipesChosenArray = uniq(recipesChosenArray)
 
     // MAJ FOR TAG ARRAY
     recipesChosenArrayTag = recipesChosenArray
@@ -194,32 +301,55 @@ function submitSearch() {
 }
 
 
-// TAG SEARCH ON ENTER KEY
-document.getElementById("searching-ingredient-input").addEventListener("keydown", function (event) {
-    if (event.defaultPrevented) {
-        return
-    }
-    switch (event.key) {
-        case "Enter":
-            submitIngredientSearch()
-            break
-        default:
-            return
-    }
-    event.preventDefault()
-}, true)
+// INGREDIENT TAG SEARCH ON ENTER KEY
+document.getElementById("searching-ingredient-input").addEventListener("input", function () {
+    submitIngredientSearch()
+})
 
 // INGREDIENT SEARCH BAR
 function submitIngredientSearch() {
     let inputValue = document.getElementById("searching-ingredient-input").value
 
     // search tag in ingredient
-    const searchTagIngredient = ingredientsTagArray.filter((ingredient) => {
-        // console.log(ingredient.toLowerCase())
-        return ingredient.toLowerCase().includes(inputValue.toLowerCase())
+    const searchTagIngredient = ingredientsTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
     })
 
     displayIngredientTags(searchTagIngredient)
+}
+
+// APPAREIL TAG SEARCH ON ENTER KEY
+document.getElementById("searching-appareil-input").addEventListener("input", function () {
+    submitAppareilSearch()
+})
+
+// APPAREIL SEARCH BAR
+function submitAppareilSearch() {
+    let inputValue = document.getElementById("searching-appareil-input").value
+
+    // search tag in ustensils
+    const searchTagAppareil = appareilsTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    displayAppareilTags(searchTagAppareil)
+}
+
+// USTENSILE TAG SEARCH ON ENTER KEY
+document.getElementById("searching-ustensile-input").addEventListener("input", function () {
+    submitUstensileSearch()
+})
+
+// USTENSILE SEARCH BAR
+function submitUstensileSearch() {
+    let inputValue = document.getElementById("searching-ustensile-input").value
+
+    // search tag in ustensils
+    const searchTagAppareil = ustensilesTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    displayUstensileTags(searchTagAppareil)
 }
 
 // DELETE DOUBLONS
@@ -227,7 +357,29 @@ function uniq(a) {
     return Array.from(new Set(a))
 }
 
-// OPEN TAGS SELECTOR
-document.getElementById("categories-item_ingredients").addEventListener('click', () => {
-    document.getElementById("categories-item_ingredients").classList.add('open')
+// TAGS SELECTOR
+const ingredientTags = document.getElementById("categories-item_ingredients")
+const appareilTags = document.getElementById("categories-item_appareil")
+const ustensileTags = document.getElementById("categories-item_ustensiles")
+
+
+// CLOSE
+document.addEventListener('click', (event) => {
+    if (!ingredientTags.contains(event.target)) ingredientTags.classList.remove('open')
+    if (!appareilTags.contains(event.target)) appareilTags.classList.remove('open')
+    if (!ustensileTags.contains(event.target)) ustensileTags.classList.remove('open')
+})
+
+// OPEN
+// INGREDIENTS
+ingredientTags.addEventListener('click', () => {
+    ingredientTags.classList.add('open')
+})
+// APPAREIL
+appareilTags.addEventListener('click', () => {
+    appareilTags.classList.add('open')
+})
+// INGREDIENTS USTENSILES
+ustensileTags.addEventListener('click', () => {
+    ustensileTags.classList.add('open')
 })

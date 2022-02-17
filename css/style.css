@@ -54,6 +54,13 @@ body {
     color: #929292;
 }
 
+.error-msg {
+    display: none;
+}
+.error-msg.active {
+    display: initial;
+}
+
 .tags-actives {
     padding-top: 20px;
     width: 100%;
@@ -78,6 +85,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.tagPrinted-blue {
+    background-color: #3282F7;
+}
+.tagPrinted-green {
+    background-color: #68D9A4;
+}
+.tagPrinted-red {
+    background-color: #ED6454;
 }
 
 .categories {
@@ -135,35 +151,35 @@ body {
 .ingredients {
     background-color: #3282F7;
 }
+.appareil {
+    background-color: #68D9A4;
+}
+.ustensiles {
+    background-color: #ED6454;
+}
+
 /* INGREDIENTS OPEN */
-.ingredients.open {
+.ingredients.open, .appareil.open, .ustensiles.open {
     height: unset;
     width: 700px;
     align-items: flex-start;
     padding-top: 25px;
     padding-bottom: 25px;
 }
-.ingredients.open p {
+.ingredients.open p, .appareil.open p, .ustensiles.open p {
     display: none;
 }
-.ingredients.open .categories_expand {
+.ingredients.open .categories_expand, .appareil.open .categories_expand, .ustensiles.open .categories_expand {
     transform: rotate(180deg);
 }
-.ingredients.open .categories-items_container div {
+.ingredients.open .categories-items_container div, .appareil.open .categories-items_container div, .ustensiles.open .categories-items_container div {
     display: initial;
 }
-.ingredients.open .categories-item_header input {
+.ingredients.open .categories-item_header input, .appareil.open .categories-item_header input, .ustensiles.open .categories-item_header input {
     display: initial;
 }
 
 
-.appareil {
-    background-color: #68D9A4;
-}
-
-.ustensiles {
-    background-color: #ED6454;
-}
 
 /* CARDS */
 .card-grid {
