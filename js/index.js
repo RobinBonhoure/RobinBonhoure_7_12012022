@@ -15,7 +15,7 @@ let recipesChosenArrayTag = recipes
 init()
 
 function init() {
-    displayCards(recipes)
+    // displayCards(recipes)
 }
 
 // DISPLAY CARDS
@@ -55,13 +55,15 @@ function displayCards(inputArray) {
             let { ingredient, quantity, unit } = item
             const listIngredients = document.getElementById(`list-ingredients${id}`)
             const liste = document.createElement('li')
-            if (unit === undefined || null) {
-                unit = ""
-            }
             if (quantity === undefined || null) {
-                quantity = ""
+                liste.innerHTML = `<b>${ingredient}</b>`
+            } else {
+                if (unit === undefined || null) {
+                    liste.innerHTML = `<b>${ingredient}: </b> ${quantity}`
+                } else {
+                    liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
+                }
             }
-            liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
             listIngredients.appendChild(liste)
 
             //  INGREDIENTS TAGS
@@ -274,7 +276,11 @@ document.getElementById("searching-input").addEventListener("keydown", function 
 
 // SEARCH BAR
 function submitSearch() {
+
     let inputValue = document.getElementById("searching-input").value
+
+    // AT LEAST 3 CHARACTERS
+    if (inputValue.length < 3) return
 
     // search ingredients
     const searchIngredient = recipes.filter((recipe) => {
@@ -361,18 +367,25 @@ function uniq(a) {
 const ingredientTags = document.getElementById("categories-item_ingredients")
 const appareilTags = document.getElementById("categories-item_appareil")
 const ustensileTags = document.getElementById("categories-item_ustensiles")
+const ingredientsExpand = document.getElementById("ingredients_expand")
+const appareilExpand = document.getElementById("appareil_expand")
+const ustensilesExpand = document.getElementById("ustensiles_expand")
+
 
 
 // CLOSE
 document.addEventListener('click', (event) => {
-    if (!ingredientTags.contains(event.target)) ingredientTags.classList.remove('open')
-    if (!appareilTags.contains(event.target)) appareilTags.classList.remove('open')
-    if (!ustensileTags.contains(event.target)) ustensileTags.classList.remove('open')
+    console.log(ingredientTags, event.target)
+    if (!ingredientTags.contains(event.target) || event.target.getAttribute('id') === 'appareil_expand') ingredientTags.classList.remove('open')
+    if (!appareilTags.contains(event.target) || event.target.getAttribute('id') === 'appareil_expand') appareilTags.classList.remove('open')
+    if (!ustensileTags.contains(event.target) || event.target.getAttribute('id') === 'ustensiles_expand') ustensileTags.classList.remove('open')
 })
+
 
 // OPEN
 // INGREDIENTS
-ingredientTags.addEventListener('click', () => {
+ingredientTags.addEventListener('click', (event) => {
+    // if (event.target === ingredientsExpand) return
     ingredientTags.classList.add('open')
 })
 // APPAREIL
@@ -383,3 +396,4 @@ appareilTags.addEventListener('click', () => {
 ustensileTags.addEventListener('click', () => {
     ustensileTags.classList.add('open')
 })
+

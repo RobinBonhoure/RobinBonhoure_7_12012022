@@ -6,6 +6,7 @@ p, h1, h2, h3 {
     margin: 0;
     padding: 0;
 }
+
 ul, li {
     text-decoration: none;
     list-style: none;
@@ -46,6 +47,7 @@ body {
     width: 100%;
     font-size: 18px;
 }
+
 .searching-input:focus {
     outline: none;
 }
@@ -57,6 +59,7 @@ body {
 .error-msg {
     display: none;
 }
+
 .error-msg.active {
     display: initial;
 }
@@ -86,12 +89,15 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .tagPrinted-blue {
     background-color: #3282F7;
 }
+
 .tagPrinted-green {
     background-color: #68D9A4;
 }
+
 .tagPrinted-red {
     background-color: #ED6454;
 }
@@ -101,6 +107,13 @@ body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    z-index: 100;
+    height: calc(72px + 15px);
+}
+@media (max-width: 1500px) {
+    .categories {
+        height: 100%;
+    }
 }
 
 .categories-item {
@@ -120,27 +133,32 @@ body {
     position: relative;
     cursor: pointer;
 }
+
 .categories-item_header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .categories-item_header input {
     display: none;
     color: #fff;
     font-weight: 700;
 }
+
 .categories-item_header input::placeholder {
     color: rgba(255, 255, 255, 0.5);
     font-weight: 700;
 }
+
 .categories-items_container {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     justify-content: flex-start;
 }
+
 .categories-items_container div {
     width: 30%;
     margin-top: 20px;
@@ -151,9 +169,11 @@ body {
 .ingredients {
     background-color: #3282F7;
 }
+
 .appareil {
     background-color: #68D9A4;
 }
+
 .ustensiles {
     background-color: #ED6454;
 }
@@ -166,15 +186,19 @@ body {
     padding-top: 25px;
     padding-bottom: 25px;
 }
+
 .ingredients.open p, .appareil.open p, .ustensiles.open p {
     display: none;
 }
+
 .ingredients.open .categories_expand, .appareil.open .categories_expand, .ustensiles.open .categories_expand {
     transform: rotate(180deg);
 }
+
 .ingredients.open .categories-items_container div, .appareil.open .categories-items_container div, .ustensiles.open .categories-items_container div {
     display: initial;
 }
+
 .ingredients.open .categories-item_header input, .appareil.open .categories-item_header input, .ustensiles.open .categories-item_header input {
     display: initial;
 }
@@ -186,22 +210,40 @@ body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    /* position: absolute;
+    top: 0; */
 }
+
 .card {
     width: calc(100%/3 - 20px);
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;
 }
+
+@media (max-width: 1200px) {
+    .card {
+        width: calc(100%/2 - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: calc(100% - 20px);
+    }
+}
+
 .card-image {
     height: 178px;
     background-color: #C7BEBE;
 }
+
 .card-infos {
     min-height: 178px;
     background-color: #E7E7E7;
     padding: 20px;
 }
+
 .card-infos_header {
     width: 100%;
     display: flex;
@@ -209,22 +251,27 @@ body {
     align-items: center;
     padding-top: 20px;
 }
+
 .card-infos_time {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .card-infos_time img {
     margin-right: 10px;
 }
+
 .card-infos_footer {
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
 }
+
 .card-infos_footer ul {
     width: calc(50% - 10px);
 }
+
 .card-infos_footer p {
     width: calc(50% - 10px);
 }
