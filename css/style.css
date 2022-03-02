@@ -191,7 +191,8 @@ body {
     display: none;
 }
 
-.ingredients.open .categories_expand, .appareil.open .categories_expand, .ustensiles.open .categories_expand {
+.categories_close {
+    display: none;
     transform: rotate(180deg);
 }
 
