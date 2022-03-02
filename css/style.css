@@ -169,7 +169,8 @@ body {
 .ingredients.open p, .appareil.open p, .ustensiles.open p {
     display: none;
 }
-.ingredients.open .categories_expand, .appareil.open .categories_expand, .ustensiles.open .categories_expand {
+.categories_close {
+    display: none;
     transform: rotate(180deg);
 }
 .ingredients.open .categories-items_container div, .appareil.open .categories-items_container div, .ustensiles.open .categories-items_container div {

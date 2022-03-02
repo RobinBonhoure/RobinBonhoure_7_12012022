@@ -55,13 +55,15 @@ function displayCards(inputArray) {
             let { ingredient, quantity, unit } = item
             const listIngredients = document.getElementById(`list-ingredients${id}`)
             const liste = document.createElement('li')
-            if (unit === undefined || null) {
-                unit = ""
-            }
             if (quantity === undefined || null) {
-                quantity = ""
+                liste.innerHTML = `<b>${ingredient}</b>`
+            } else {
+                if (unit === undefined || null) {
+                    liste.innerHTML = `<b>${ingredient}: </b> ${quantity}`
+                } else {
+                    liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
+                }
             }
-            liste.innerHTML = `<b>${ingredient}: </b> ${quantity} ${unit}`
             listIngredients.appendChild(liste)
 
             //  INGREDIENTS TAGS
@@ -361,25 +363,53 @@ function uniq(a) {
 const ingredientTags = document.getElementById("categories-item_ingredients")
 const appareilTags = document.getElementById("categories-item_appareil")
 const ustensileTags = document.getElementById("categories-item_ustensiles")
+const ingredientsExpand = document.getElementById("ingredients_expand")
+const appareilExpand = document.getElementById("appareil_expand")
+const ustensilesExpand = document.getElementById("ustensiles_expand")
+const ingredientsClose = document.getElementById("ingredients_close")
+const appareilClose = document.getElementById("appareil_close")
+const ustensilesClose = document.getElementById("ustensiles_close")
+
 
 
 // CLOSE
 document.addEventListener('click', (event) => {
-    if (!ingredientTags.contains(event.target)) ingredientTags.classList.remove('open')
-    if (!appareilTags.contains(event.target)) appareilTags.classList.remove('open')
-    if (!ustensileTags.contains(event.target)) ustensileTags.classList.remove('open')
+    if (!ingredientTags.contains(event.target) || event.target === ingredientsClose) {
+        ingredientTags.classList.remove('open')
+        ingredientsClose.style.display = 'none'
+        ingredientsExpand.style.display = 'initial'
+    }
+    if (!appareilTags.contains(event.target) || event.target === appareilClose) {
+        appareilTags.classList.remove('open')
+        appareilClose.style.display = 'none'
+        appareilExpand.style.display = 'initial'
+    }
+    if (!ustensileTags.contains(event.target) || event.target === ustensilesClose) {
+        ustensileTags.classList.remove('open')
+        ustensilesClose.style.display = 'none'
+        ustensilesExpand.style.display = 'initial'
+    }
 })
+
+
+//  METTRE 2 ICONE ET CHANGE LE DISPLAY
 
 // OPEN
 // INGREDIENTS
 ingredientTags.addEventListener('click', () => {
     ingredientTags.classList.add('open')
+    ingredientsClose.style.display = 'initial'
+    ingredientsExpand.style.display = 'none'
 })
 // APPAREIL
 appareilTags.addEventListener('click', () => {
     appareilTags.classList.add('open')
+    appareilClose.style.display = 'initial'
+    appareilExpand.style.display = 'none'
 })
 // INGREDIENTS USTENSILES
 ustensileTags.addEventListener('click', () => {
     ustensileTags.classList.add('open')
+    ustensilesClose.style.display = 'initial'
+    ustensilesExpand.style.display = 'none'
 })
