@@ -248,7 +248,6 @@ function rerollCardsWithTags() {
                         break
                     }
                 }
-                console.log(tagsArrayIngredients,recipesChosenArray)
                 recipesChosenArray = recipesChosenArrayFilter
             }
         }
@@ -307,24 +306,36 @@ document.getElementById("searching-input").addEventListener("keydown", function 
 function submitSearch() {
 
     let inputValue = document.getElementById("searching-input").value
+    let searchIngredient = []
+    let searchName = []
+    let searchDescription = []
 
     // AT LEAST 3 CHARACTERS
     if (inputValue.length < 3) return
 
     // search ingredients
-    const searchIngredient = recipes.filter((recipe) => {
-        return recipe.ingredients.some(ingredient => {
-            return ingredient.ingredient.toLowerCase().includes(inputValue.toLowerCase())
-        })
-    })
+    for (let j = 0; j < recipes.length; j++) {
+        for (let k = 0; k < recipes[j].ingredients.length; k++) {
+            if (recipes[j].ingredients[k].ingredient.toLowerCase().includes(inputValue.toLowerCase())) {
+                searchIngredient.push(recipes[j]);
+            }
+            break;
+        }
+    }
+
     // search name
-    const searchName = recipes.filter((recipe) => {
-        return recipe.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    for (let j = 0; j < recipes.length; j++) {
+        if (recipes[j].name.toLowerCase().includes(inputValue.toLowerCase())) {
+            searchName.push(recipes[j]);
+        }
+    }
+    
     // search description
-    const searchDescription = recipes.filter((recipe) => {
-        return recipe.description.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    for (let j = 0; j < recipes.length; j++) {
+        if (recipes[j].description.toLowerCase().includes(inputValue.toLowerCase())) {
+            searchDescription.push(recipes[j]);
+        }
+    }
 
     recipesChosenArray = [...searchIngredient, ...searchName, ...searchDescription]
     recipesChosenArray = uniq(recipesChosenArray)
@@ -344,11 +355,14 @@ document.getElementById("searching-ingredient-input").addEventListener("input", 
 // INGREDIENT SEARCH BAR
 function submitIngredientSearch() {
     let inputValue = document.getElementById("searching-ingredient-input").value
-
-    // search tag in ingredient
-    const searchTagIngredient = ingredientsTagArray.filter((item) => {
-        return item.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    let searchTagIngredient = []
+    
+    // search tag in ingredients
+    for (let j = 0; j < ingredientsTagArray.length; j++) {
+        if (ingredientsTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
+            searchTagIngredient.push(ingredientsTagArray[j]);
+        }
+    }
 
     displayIngredientTags(searchTagIngredient)
 }
@@ -361,11 +375,14 @@ document.getElementById("searching-appareil-input").addEventListener("input", fu
 // APPAREIL SEARCH BAR
 function submitAppareilSearch() {
     let inputValue = document.getElementById("searching-appareil-input").value
+    let searchTagAppareil = []
 
     // search tag in ustensils
-    const searchTagAppareil = appareilsTagArray.filter((item) => {
-        return item.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    for (let j = 0; j < appareilsTagArray.length; j++) {
+        if (appareilsTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
+            searchTagAppareil.push(appareilsTagArray[j]);
+        }
+    }
 
     displayAppareilTags(searchTagAppareil)
 }
@@ -378,13 +395,16 @@ document.getElementById("searching-ustensile-input").addEventListener("input", f
 // USTENSILE SEARCH BAR
 function submitUstensileSearch() {
     let inputValue = document.getElementById("searching-ustensile-input").value
+    let searchTagUstensile = []
 
     // search tag in ustensils
-    const searchTagAppareil = ustensilesTagArray.filter((item) => {
-        return item.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    for (let j = 0; j < ustensilesTagArray.length; j++) {
+        if (ustensilesTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
+            searchTagUstensile.push(ustensilesTagArray[j]);
+        }
+    }
 
-    displayUstensileTags(searchTagAppareil)
+    displayUstensileTags(searchTagUstensile)
 }
 
 // DELETE DOUBLONS
