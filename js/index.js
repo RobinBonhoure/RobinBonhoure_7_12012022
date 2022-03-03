@@ -299,6 +299,41 @@ function submitSearch() {
     // MAJ FOR TAG ARRAY
     recipesChosenArrayTag = recipesChosenArray
 
+
+    //  TAGS ALREADY SELECTED
+    if (tagsArrayIngredients.length !== 0) {
+        tagsArrayIngredients.forEach((tag) => {
+            // search ingredients
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.ingredients.some(ingredient =>
+                    ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                )
+            )
+        })
+        console.log(recipesChosenArray)
+    }
+
+    if (tagsArrayAppareils.length !== 0) {
+        tagsArrayAppareils.forEach((tag) => {
+            // search appareil
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+            )
+        })
+        console.log(recipesChosenArray)
+    }
+
+    if (tagsArrayUstensiles.length !== 0) {
+        tagsArrayUstensiles.forEach((tag) => {
+            // search ustensiles
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.ustensils.some(item =>
+                    item.toLowerCase().includes(tag.toLowerCase())
+                )
+            )
+        })
+    }
+
     displayCards(recipesChosenArray)
 }
 
