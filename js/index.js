@@ -229,8 +229,8 @@ function onTagCloseClick() {
 // REROLL CARDS WITH TAGS
 function rerollCardsWithTags() {
     if (tagsArrayIngredients.length === 0 && tagsArrayAppareils.length === 0 && tagsArrayUstensiles.length === 0) {
-        console.log("a")
-        displayCards(recipes)
+        return displayCards(recipes)
+        
     } else {
         // init search ingredients
         recipesChosenArray = recipes
@@ -245,7 +245,6 @@ function rerollCardsWithTags() {
                         if (recipesChosenArray[j].ingredients[k].ingredient.toLowerCase().includes(tagsArrayIngredients[i].toLowerCase())) {
                             recipesChosenArrayFilter.push(recipesChosenArray[j]);
                         }
-                        break
                     }
                 }
                 recipesChosenArray = recipesChosenArrayFilter
@@ -275,7 +274,6 @@ function rerollCardsWithTags() {
                         if (recipesChosenArray[j].ustensils[k].toLowerCase().includes(tagsArrayUstensiles[i].toLowerCase())) {
                             recipesChosenArrayFilter.push(recipesChosenArray[j]);
                         }
-                        break
                     }
                 }
                 recipesChosenArray = recipesChosenArrayFilter
