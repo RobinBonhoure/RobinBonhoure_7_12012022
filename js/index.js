@@ -300,7 +300,7 @@ function submitSearch() {
             searchName.push(recipes[j]);
         }
     }
-    
+
     // search description
     for (let j = 0; j < recipes.length; j++) {
         if (recipes[j].description.toLowerCase().includes(inputValue.toLowerCase())) {
@@ -317,36 +317,41 @@ function submitSearch() {
 
     //  TAGS ALREADY SELECTED
     if (tagsArrayIngredients.length !== 0) {
-        tagsArrayIngredients.forEach((tag) => {
-            // search ingredients
-            recipesChosenArray = recipesChosenArray.filter((recipe) =>
-                recipe.ingredients.some(ingredient =>
-                    ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
-                )
-            )
-        })
-        console.log(recipesChosenArray)
+        let recipesChosenArrayFilter = []
+        for (let i = 0; i < tagsArrayIngredients.length; i++) {
+            for (let j = 0; j < recipesChosenArray.length; j++) {
+                for (let k = 0; k < recipesChosenArray[j].ingredients.length; k++) {
+                    if (recipesChosenArray[j].ingredients[k].ingredient.toLowerCase().includes(tagsArrayIngredients[i].toLowerCase())) {
+                        recipesChosenArrayFilter.push(recipesChosenArray[j]);
+                    }
+                }
+            }
+            recipesChosenArray = recipesChosenArrayFilter
+        }
     }
-
     if (tagsArrayAppareils.length !== 0) {
-        tagsArrayAppareils.forEach((tag) => {
-            // search appareil
-            recipesChosenArray = recipesChosenArray.filter((recipe) =>
-                recipe.appliance.toLowerCase().includes(tag.toLowerCase())
-            )
-        })
-        console.log(recipesChosenArray)
+        let recipesChosenArrayFilter = []
+        for (let i = 0; i < tagsArrayAppareils.length; i++) {
+            for (let j = 0; j < recipesChosenArray.length; j++) {
+                if (recipesChosenArray[j].appliance.toLowerCase().includes(tagsArrayAppareils[i].toLowerCase())) {
+                    recipesChosenArrayFilter.push(recipesChosenArray[j]);
+                }
+            }
+        }
+        recipesChosenArray = recipesChosenArrayFilter
     }
-
     if (tagsArrayUstensiles.length !== 0) {
-        tagsArrayUstensiles.forEach((tag) => {
-            // search ustensiles
-            recipesChosenArray = recipesChosenArray.filter((recipe) =>
-                recipe.ustensils.some(item =>
-                    item.toLowerCase().includes(tag.toLowerCase())
-                )
-            )
-        })
+        let recipesChosenArrayFilter = []
+        for (let i = 0; i < tagsArrayUstensiles.length; i++) {
+            for (let j = 0; j < recipesChosenArray.length; j++) {
+                for (let k = 0; k < recipesChosenArray[j].ustensils.length; k++) {
+                    if (recipesChosenArray[j].ustensils[k].toLowerCase().includes(tagsArrayUstensiles[i].toLowerCase())) {
+                        recipesChosenArrayFilter.push(recipesChosenArray[j]);
+                    }
+                }
+            }
+            recipesChosenArray = recipesChosenArrayFilter
+        }
     }
 
     displayCards(recipesChosenArray)
