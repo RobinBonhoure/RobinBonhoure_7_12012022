@@ -27,14 +27,9 @@ function displayCards(inputArray) {
     ingredientsTagArray = []
     appareilsTagArray = []
     ustensilesTagArray = []
-    for (let i = 0; i < inputArray.length; i++) {
-        let id = inputArray[i].id;
-        let name = inputArray[i].name;
-        let ingredients = inputArray[i].ingredients;
-        let time = inputArray[i].time;
-        let description = inputArray[i].description;
-        let appliance = inputArray[i].appliance;
-        let ustensils = inputArray[i].ustensils;
+    inputArray.forEach((recipe) => {
+        let { id, name, ingredients, time, description, appliance, ustensils } = recipe
+
         // CREATION DES ELEMENTS
         const div = document.createElement('div')
         div.className = "card"
@@ -56,10 +51,8 @@ function displayCards(inputArray) {
         cardGrid.appendChild(div)
 
         // RAJOUT DES INGREDIENTS
-        for (let i = 0; i < ingredients.length; i++) {
-            let ingredient = ingredients[i].ingredient;
-            let quantity = ingredients[i].quantity;
-            let unit = ingredients[i].unit;
+        ingredients.forEach((item) => {
+            let { ingredient, quantity, unit } = item
             const listIngredients = document.getElementById(`list-ingredients${id}`)
             const liste = document.createElement('li')
             if (quantity === undefined || null) {
@@ -75,14 +68,12 @@ function displayCards(inputArray) {
 
             //  INGREDIENTS TAGS
             ingredientsTagArray.push(ingredient)
-        }
-
+        })
         appareilsTagArray.push(appliance)
-
-        for (let i = 0; i < ustensils.length; i++) {
-            ustensilesTagArray.push(ustensils[i])
-        }
-    }
+        ustensils.forEach((item) => {
+            ustensilesTagArray.push(item)
+        })
+    })
 
     // NO DOUBLONS TAGS
     ingredientsTagArray = uniq(ingredientsTagArray)
@@ -98,42 +89,39 @@ function displayCards(inputArray) {
 // REMPLI LES TAGS INGREDIENTS
 function displayIngredientTags(array) {
     ingredientsTagGrid.innerHTML = ""
-    for (let i = 0; i < array.length; i++) {
+    array.forEach((item) => {
         const tagDiv = document.createElement('div')
         tagDiv.className = "tag"
         tagDiv.dataset.type = "ingredient"
-        tagDiv.innerHTML = `${array[i]}`
+        tagDiv.innerHTML = `${item}`
         ingredientsTagGrid.appendChild(tagDiv)
-    }
-
+    })
     // EVENT CLICK TAG
     tagClick()
 }
 // REMPLI LES TAGS APPAREILS
 function displayAppareilTags(array) {
     appareilsTagGrid.innerHTML = ""
-    for (let i = 0; i < array.length; i++) {
+    array.forEach((item) => {
         const tagDiv = document.createElement('div')
         tagDiv.className = "tag"
         tagDiv.dataset.type = "appareil"
-        tagDiv.innerHTML = `${array[i]}`
+        tagDiv.innerHTML = `${item}`
         appareilsTagGrid.appendChild(tagDiv)
-    }
-
+    })
     // EVENT CLICK TAG
     tagClick()
 }
 // REMPLI LES TAGS USTENSILES
 function displayUstensileTags(array) {
     ustensilesTagGrid.innerHTML = ""
-    for (let i = 0; i < array.length; i++) {
+    array.forEach((item) => {
         const tagDiv = document.createElement('div')
         tagDiv.className = "tag"
         tagDiv.dataset.type = "ustensile"
-        tagDiv.innerHTML = `${array[i]}`
+        tagDiv.innerHTML = `${item}`
         ustensilesTagGrid.appendChild(tagDiv)
-    }
-
+    })
     // EVENT CLICK TAG
     tagClick()
 }
@@ -141,15 +129,15 @@ function displayUstensileTags(array) {
 // EVENT CLICK TAG
 function tagClick() {
     let tags = document.querySelectorAll(".tag")
-    for (let i = 0; i < tags.length; i++) {
-        tags[i].addEventListener('click', () => {
+    tags.forEach((tag) => {
+        tag.addEventListener('click', () => {
 
-            let tagValue = tags[i].textContent
-            let tagType = tags[i].dataset.type
+            let tagValue = tag.textContent
+            let tagType = tag.dataset.type
 
             addTag(tagValue, tagType)
         })
-    }
+    })
 }
 
 // ADD TAG
@@ -194,24 +182,24 @@ function printTag(tag, tagClass, type) {
 function onTagCloseClick() {
 
     let tagsClose = document.querySelectorAll(".tags-actives_close")
-    for (let i = 0; i < tagsClose.length; i++) {
-        tagsClose[i].addEventListener('click', () => {
+    tagsClose.forEach((closer) => {
+        closer.addEventListener('click', () => {
 
             // REMOVE TAG ON ARRAY
-            let tagValue = tagsClose[i].parentElement.textContent.trim()
-            if (tagsClose[i].parentElement.classList.contains('tagPrinted-blue')) {
+            let tagValue = closer.parentElement.textContent.trim()
+            if (closer.parentElement.classList.contains('tagPrinted-blue')) {
                 let index = tagsArrayIngredients.indexOf(tagValue)
                 if (index > -1) {
                     tagsArrayIngredients.splice(index, 1) // 2nd parameter means remove one item only
                 }
             }
-            if (tagsClose[i].parentElement.classList.contains('tagPrinted-green')) {
+            if (closer.parentElement.classList.contains('tagPrinted-green')) {
                 let index = tagsArrayAppareils.indexOf(tagValue)
                 if (index > -1) {
                     tagsArrayAppareils.splice(index, 1) // 2nd parameter means remove one item only
                 }
             }
-            if (tagsClose[i].parentElement.classList.contains('tagPrinted-red')) {
+            if (closer.parentElement.classList.contains('tagPrinted-red')) {
                 let index = tagsArrayUstensiles.indexOf(tagValue)
                 if (index > -1) {
                     tagsArrayUstensiles.splice(index, 1) // 2nd parameter means remove one item only
@@ -221,69 +209,55 @@ function onTagCloseClick() {
             rerollCardsWithTags()
 
             // REMOVE TAG PRINTED
-            tagsClose[i].parentElement.remove()
+            closer.parentElement.remove()
         })
-    }
+    })
 }
 
 // REROLL CARDS WITH TAGS
 function rerollCardsWithTags() {
     if (tagsArrayIngredients.length === 0 && tagsArrayAppareils.length === 0 && tagsArrayUstensiles.length === 0) {
-        return displayCards(recipes)
-        
+        displayCards(recipes)
     } else {
         // init search ingredients
         recipesChosenArray = recipes
 
         if (tagsArrayIngredients.length !== 0) {
-            let recipesChosenArrayFilter = []
-
-            for (let i = 0; i < tagsArrayIngredients.length; i++) {
-
-                for (let j = 0; j < recipesChosenArray.length; j++) {
-                    for (let k = 0; k < recipesChosenArray[j].ingredients.length; k++) {
-                        if (recipesChosenArray[j].ingredients[k].ingredient.toLowerCase().includes(tagsArrayIngredients[i].toLowerCase())) {
-                            recipesChosenArrayFilter.push(recipesChosenArray[j]);
-                        }
-                    }
-                }
-                recipesChosenArray = recipesChosenArrayFilter
-            }
+            tagsArrayIngredients.forEach((tag) => {
+                // search ingredients
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.ingredients.some(ingredient =>
+                        ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                    )
+                )
+            })
+            console.log(recipesChosenArray)
         }
 
-
         if (tagsArrayAppareils.length !== 0) {
-            let recipesChosenArrayFilter = []
-            for (let i = 0; i < tagsArrayAppareils.length; i++) {
-
-                for (let j = 0; j < recipesChosenArray.length; j++) {
-                    if (recipesChosenArray[j].appliance.toLowerCase().includes(tagsArrayAppareils[i].toLowerCase())) {
-                        recipesChosenArrayFilter.push(recipesChosenArray[j]);
-                    }
-                }
-            }
-            recipesChosenArray = recipesChosenArrayFilter
+            tagsArrayAppareils.forEach((tag) => {
+                // search appareil
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+                )
+            })
+            console.log(recipesChosenArray)
         }
 
         if (tagsArrayUstensiles.length !== 0) {
-            let recipesChosenArrayFilter = []
-            for (let i = 0; i < tagsArrayUstensiles.length; i++) {
-
-                for (let j = 0; j < recipesChosenArray.length; j++) {
-                    for (let k = 0; k < recipesChosenArray[j].ustensils.length; k++) {
-                        if (recipesChosenArray[j].ustensils[k].toLowerCase().includes(tagsArrayUstensiles[i].toLowerCase())) {
-                            recipesChosenArrayFilter.push(recipesChosenArray[j]);
-                        }
-                    }
-                }
-                recipesChosenArray = recipesChosenArrayFilter
-            }
+            tagsArrayUstensiles.forEach((tag) => {
+                // search ustensiles
+                recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                    recipe.ustensils.some(item =>
+                        item.toLowerCase().includes(tag.toLowerCase())
+                    )
+                )
+            })
         }
+
+        displayCards(recipesChosenArray)
     }
-
-    displayCards(recipesChosenArray)
 }
-
 
 // SEARCH ON ENTER KEY
 document.getElementById("searching-input").addEventListener("keydown", function (event) {
@@ -302,14 +276,13 @@ document.getElementById("searching-input").addEventListener("keydown", function 
 
 // SEARCH BAR
 function submitSearch() {
-
     let inputValue = document.getElementById("searching-input").value
-    let searchIngredient = []
-    let searchName = []
-    let searchDescription = []
+    let searchIngredient = [];
+    let searchName = [];
+    let searchDescription = [];
 
     // AT LEAST 3 CHARACTERS
-    if (inputValue.length < 3) return
+    if (inputValue.length < 3) return;
 
     // search ingredients
     for (let j = 0; j < recipes.length; j++) {
@@ -341,6 +314,41 @@ function submitSearch() {
     // MAJ FOR TAG ARRAY
     recipesChosenArrayTag = recipesChosenArray
 
+
+    //  TAGS ALREADY SELECTED
+    if (tagsArrayIngredients.length !== 0) {
+        tagsArrayIngredients.forEach((tag) => {
+            // search ingredients
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.ingredients.some(ingredient =>
+                    ingredient.ingredient.toLowerCase().includes(tag.toLowerCase())
+                )
+            )
+        })
+        console.log(recipesChosenArray)
+    }
+
+    if (tagsArrayAppareils.length !== 0) {
+        tagsArrayAppareils.forEach((tag) => {
+            // search appareil
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.appliance.toLowerCase().includes(tag.toLowerCase())
+            )
+        })
+        console.log(recipesChosenArray)
+    }
+
+    if (tagsArrayUstensiles.length !== 0) {
+        tagsArrayUstensiles.forEach((tag) => {
+            // search ustensiles
+            recipesChosenArray = recipesChosenArray.filter((recipe) =>
+                recipe.ustensils.some(item =>
+                    item.toLowerCase().includes(tag.toLowerCase())
+                )
+            )
+        })
+    }
+
     displayCards(recipesChosenArray)
 }
 
@@ -353,14 +361,11 @@ document.getElementById("searching-ingredient-input").addEventListener("input", 
 // INGREDIENT SEARCH BAR
 function submitIngredientSearch() {
     let inputValue = document.getElementById("searching-ingredient-input").value
-    let searchTagIngredient = []
-    
-    // search tag in ingredients
-    for (let j = 0; j < ingredientsTagArray.length; j++) {
-        if (ingredientsTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
-            searchTagIngredient.push(ingredientsTagArray[j]);
-        }
-    }
+
+    // search tag in ingredient
+    const searchTagIngredient = ingredientsTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
+    })
 
     displayIngredientTags(searchTagIngredient)
 }
@@ -373,14 +378,11 @@ document.getElementById("searching-appareil-input").addEventListener("input", fu
 // APPAREIL SEARCH BAR
 function submitAppareilSearch() {
     let inputValue = document.getElementById("searching-appareil-input").value
-    let searchTagAppareil = []
 
     // search tag in ustensils
-    for (let j = 0; j < appareilsTagArray.length; j++) {
-        if (appareilsTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
-            searchTagAppareil.push(appareilsTagArray[j]);
-        }
-    }
+    const searchTagAppareil = appareilsTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
+    })
 
     displayAppareilTags(searchTagAppareil)
 }
@@ -393,16 +395,13 @@ document.getElementById("searching-ustensile-input").addEventListener("input", f
 // USTENSILE SEARCH BAR
 function submitUstensileSearch() {
     let inputValue = document.getElementById("searching-ustensile-input").value
-    let searchTagUstensile = []
 
     // search tag in ustensils
-    for (let j = 0; j < ustensilesTagArray.length; j++) {
-        if (ustensilesTagArray[j].toLowerCase().includes(inputValue.toLowerCase())) {
-            searchTagUstensile.push(ustensilesTagArray[j]);
-        }
-    }
+    const searchTagAppareil = ustensilesTagArray.filter((item) => {
+        return item.toLowerCase().includes(inputValue.toLowerCase())
+    })
 
-    displayUstensileTags(searchTagUstensile)
+    displayUstensileTags(searchTagAppareil)
 }
 
 // DELETE DOUBLONS
@@ -464,4 +463,3 @@ ustensileTags.addEventListener('click', () => {
     ustensilesClose.style.display = 'initial'
     ustensilesExpand.style.display = 'none'
 })
-
